@@ -13,6 +13,7 @@ data "template_file" "setup" {
     minimum_master_nodes              = "${var.elasticsearch_desired_instances/2 + 1}"
     elasticsearch_heap_memory_percent = "${var.elasticsearch_heap_memory_percent}"
     elasticsearch_fielddata_limit     = "${var.elasticsearch_fielddata_limit}"
+    elasticsearch_search_queue_size   = "${var.elasticsearch_search_queue_size}"
   }
 }
 
@@ -28,6 +29,7 @@ data "template_file" "load_snapshot" {
     snapshot_repository_read_only = "${var.snapshot_repository_read_only}"
     high_disk_watermark               = "${var.elasticsearch_high_disk_watermark}"
     low_disk_watermark               = "${var.elasticsearch_low_disk_watermark}"
+    elasticsearch_delayed_allocation  = "${var.elasticsearch_delayed_allocation}"
   }
 }
 

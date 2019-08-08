@@ -103,6 +103,17 @@ variable "elasticsearch_fielddata_limit" {
   default     = "30%"
 }
 
+variable "elasticsearch_search_queue_size" {
+  description = "the thread_pool queue size for searches. Defaults to ES default (1000) if unset"
+  default     = ""
+}
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/master/delayed-allocation.html
+variable "elasticsearch_delayed_allocation" {
+  description = "The time to wait after a node leaves before re-allocating shards. ES default of 1 minute used if unset"
+  default     = ""
+}
+
 # disk based shard allocation filtering settings
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/disk-allocator.html
 variable "elasticsearch_high_disk_watermark" {

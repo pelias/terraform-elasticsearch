@@ -33,6 +33,11 @@ gateway.expected_nodes: ${expected_nodes}
 indices.breaker.fielddata.limit: ${elasticsearch_fielddata_limit}
 EOF
 
+## set search queue size if set
+if [[ "${elasticsearch_search_queue_size}" != "" ]]; then
+  echo "thread_pool.search.queue_size: ${elasticsearch_search_queue_size}" >> /etc/elasticsearch/elasticsearch.yml
+fi
+
 # elasticsearch 2.4 specific settings
 # note: we can check if 'bin/plugin' exists, this was renamed after 2.4
 if [ -f '/usr/share/elasticsearch/bin/plugin' ]; then
