@@ -29,6 +29,7 @@ data "template_file" "load_snapshot" {
     snapshot_repository_read_only = "${var.snapshot_repository_read_only}"
     high_disk_watermark               = "${var.elasticsearch_high_disk_watermark}"
     low_disk_watermark               = "${var.elasticsearch_low_disk_watermark}"
+    elasticsearch_delayed_allocation  = "${var.elasticsearch_delayed_allocation}"
   }
 }
 

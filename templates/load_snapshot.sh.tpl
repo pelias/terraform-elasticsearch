@@ -11,6 +11,7 @@ snapshot_name="${snapshot_name}"
 read_only="${snapshot_repository_read_only}"
 alias_name="${snapshot_alias_name}"
 replica_count="${snapshot_replica_count}"
+elasticsearch_delayed_allocation="${elasticsearch_delayed_allocation}"
 
 # check all required variables are set
 if [[ "$s3_bucket" == "" ]]; then
@@ -117,7 +118,17 @@ curl -s -XPUT --fail "$cluster_url/$snapshot_name/_settings" -d "{
   }
 }"
 
-## 6. make cluster read_only (prevents deletion of indices)
+## 6. Set index specific settings
+
+if [[ "$elasticsearch_delayed_allocation" != "" ]]; then
+  curl -s -XPUT --fail "$cluster_url/$snapshot_name/_settings" -d "{
+    \"settings\" : {
+      \"index.unassigned.node_left.delayed_timeout\": \"$elasticsearch_delayed_allocation\"
+    }
+  }"
+fi
+
+## 7. make cluster read_only (prevents deletion of indices)
 curl -s -XPUT --fail "$cluster_url/_cluster/settings" -d '{
   "persistent" : {
     "cluster.blocks.read_only" : true
