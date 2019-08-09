@@ -31,36 +31,36 @@ variable "ssh_ip_range" {
 
 # Autoscaling Group Settings
 
-# r4.xlarge is a good economic default for full planet builds
-# for more performance, use c4.4xlarge or similar. High throughput
+# t3.large is a good economic default for low volume full planet builds
+# for more performance, use m5.2xlarge, c5.2xlarge or similar. High throughput
 # geocoders really love having lots of CPU available
 variable "elasticsearch_instance_type" {
   description = "Elasticsearch instance type."
-  default     = "r4.xlarge"
+  default     = "t3.large"
 }
 
 # Elasticsearch ASG instance counts
-# a minimum of 5 r4.xlarge instances is needed for a full planet build
+# a full planet build can run on a single node, but 2 is better
 variable "elasticsearch_min_instances" {
   description = "total instances"
-  default     = "5"
+  default     = "2"
 }
 
 variable "elasticsearch_desired_instances" {
   description = "total instances"
-  default     = "5"
+  default     = "2"
 }
 
 variable "elasticsearch_max_instances" {
   description = "total instances"
-  default     = "5"
+  default     = "2"
 }
 
 # higher values here tune elasticsearch for use on smaller clusters
 # lower values give better performance if there is lots of RAM available
 variable "elasticsearch_heap_memory_percent" {
   description = "Elasticsearch heap size as a percent of system RAM"
-  default     = "60"
+  default     = "30"
 }
 
 ## Launch Configuration settings
@@ -70,7 +70,7 @@ variable "elasticsearch_root_volume_size" {
 }
 
 variable "elasticsearch_data_volume_size" {
-  default = "200"
+  default = "300"
 }
 
 variable "elasticsearch_log_volume_size" {
