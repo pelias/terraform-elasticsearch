@@ -65,6 +65,11 @@ variable "elasticsearch_heap_memory_percent" {
 
 ## Launch Configuration settings
 
+# Extra security groups to associate with the Elasticsearch nodes
+variable "elasticsearch_node_extra_security_groups" {
+  default = []
+}
+
 variable "elasticsearch_root_volume_size" {
   default = "8"
 }
