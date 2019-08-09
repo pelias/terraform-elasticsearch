@@ -2,7 +2,7 @@ resource "aws_launch_template" "elasticsearch" {
   name_prefix                 = "${var.service_name}-${var.environment}-elasticsearch-"
   image_id                    = "${data.aws_ami.elasticsearch_ami.id}"
   instance_type               = "${var.elasticsearch_instance_type}"
-  vpc_security_group_ids      = ["${aws_security_group.elasticsearch.id}"]
+  vpc_security_group_ids      = ["${compact(concat(list(aws_security_group.elasticsearch.id), var.elasticsearch_node_extra_security_groups))}"]
 
   key_name             = "${var.ssh_key_name}"
   user_data            = "${data.template_cloudinit_config.cloud_init.rendered}"
