@@ -78,8 +78,16 @@ variable "elasticsearch_data_volume_size" {
   default = "300"
 }
 
+variable "elasticsearch_data_volume_type" {
+  default = "gp2"
+}
+
 variable "elasticsearch_log_volume_size" {
   default = "5"
+}
+
+variable "elasticsearch_log_volume_type" {
+  default = "gp2"
 }
 
 # AMI Settings
