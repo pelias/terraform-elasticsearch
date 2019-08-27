@@ -6,6 +6,10 @@ There are many ways to successfully set up an Elasticsearch cluster, and many di
 
 This repository attempts to collect best practices for a production-ready Elasticsearch cluster run in AWS using Terraform.
 
+## Requirements
+
+- Terraform 0.11.x: Terraform 0.12 is [not yet supported](https://github.com/pelias/terraform-elasticsearch/issues/4)
+
 ## Setup instructions
 
 ### Create a terraform user
