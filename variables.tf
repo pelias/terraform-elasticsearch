@@ -139,6 +139,12 @@ variable "elasticsearch_low_disk_watermark" {
   default = ""
 }
 
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html#enabling-awareness
+variable "allocation_awareness_attributes" {
+  description = "attributes to use to determine shard placement"
+  default     = "aws_availability_zone"
+}
+
 ## snapshot loading settings
 variable "snapshot_s3_bucket" {
   description = "The bucket where ES snapshots can be loaded from S3."

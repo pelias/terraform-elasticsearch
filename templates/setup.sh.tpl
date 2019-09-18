@@ -5,6 +5,8 @@ set -e
 
 cat <<'EOF' >/etc/elasticsearch/elasticsearch.yml
 cluster.name: ${es_cluster_name}
+cluster.routing.allocation.awareness.attributes: ${allocation_awareness_attributes}
+
 node.name: $${HOSTNAME} # the $${HOSTNAME} var is filled in by Elasticsearch
 
 # our init.d script sets the default to this as well
