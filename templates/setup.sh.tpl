@@ -1,9 +1,7 @@
 #!/bin/bash
 set -e
 
-# Ideally move all this to a proper config management tool
-#
-# Configure elasticsearch
+# Generate elasticsearch.yml
 
 cat <<'EOF' >/etc/elasticsearch/elasticsearch.yml
 cluster.name: ${es_cluster_name}
