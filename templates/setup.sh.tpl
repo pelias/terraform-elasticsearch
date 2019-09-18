@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-# Ideally move all this to a proper config management tool
-#
-# Configure elasticsearch
+# Generate elasticsearch.yml
 
 cat <<'EOF' >/etc/elasticsearch/elasticsearch.yml
 cluster.name: ${es_cluster_name}
+cluster.routing.allocation.awareness.attributes: ${allocation_awareness_attributes}
+
 node.name: $${HOSTNAME} # the $${HOSTNAME} var is filled in by Elasticsearch
 
 # our init.d script sets the default to this as well
@@ -23,6 +23,7 @@ discovery.zen.minimum_master_nodes: ${minimum_master_nodes}
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
 
+cloud.node.auto_attributes: true
 cloud.aws.region: ${aws_region}
 repositories.url.allowed_urls: ["${es_allowed_urls}"]
 

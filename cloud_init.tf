@@ -14,6 +14,7 @@ data "template_file" "setup" {
     elasticsearch_heap_memory_percent = "${var.elasticsearch_heap_memory_percent}"
     elasticsearch_fielddata_limit     = "${var.elasticsearch_fielddata_limit}"
     elasticsearch_search_queue_size   = "${var.elasticsearch_search_queue_size}"
+    allocation_awareness_attributes   = "${var.allocation_awareness_attributes}"
   }
 }
 
