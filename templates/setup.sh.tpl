@@ -104,12 +104,16 @@ sudo service elasticsearch start
 # These settings will be automatically merged when creating new indices.
 # Since elasticsearch v5+ this is now the recommended way to set node-specific settings.
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
+# Since elasticsearch v6+ the 'template' param was renamed 'index_patterns'.
+# https://github.com/pelias/terraform-elasticsearch/issues/9
+# https://www.elastic.co/guide/en/elasticsearch/reference/6.2/breaking_60_indices_changes.html
 (elastic_wait) && curl \
   -X PUT \
   --fail \
   -H 'Content-Type: application/json' \
   -d '{
     "template": ["pelias*"],
+    "index_patterns": ["pelias*"],
     "order": 0,
     "settings": {
       "search.slowlog.threshold.query.warn": "5s",
