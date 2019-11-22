@@ -6,7 +6,7 @@ resource "aws_elb" "elasticsearch_elb" {
   connection_draining       = true
   internal                  = true
 
-  tags = "${var.tags}"
+  tags = "${merge({},var.tags)}"
 
   count = "${var.elb}"
 

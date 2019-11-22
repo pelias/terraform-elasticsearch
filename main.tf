@@ -30,7 +30,7 @@ resource "aws_launch_template" "elasticsearch" {
 
   tag_specifications {
     resource_type = "instance"
-    tags = "${var.tags}"
+    tags = "${merge({},var.tags)}"
   }
 }
 
