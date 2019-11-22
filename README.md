@@ -108,6 +108,17 @@ While it can be run directly, this directory's code is best used as a [Terraform
 Create a file, for example `elasticsearch.tf`, with contents like the following:
 
 ```hcl
+# define this once, possibly in another file if you want to run multiple clusters
+provider "aws" {
+  region = "us-east-1"
+
+  version = "~> 1.60"
+}
+
+provider "template" {
+  version = "~> 2.1"
+}
+
 module "elasticsearch-prod-a" {
   source = "github.com/pelias/terraform-elasticsearch?ref=v5.4.1" # check Github for the latest tagged releases
 
