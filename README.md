@@ -142,6 +142,11 @@ module "elasticsearch-prod-a" {
   #snapshot_name                     = "name-of-your-snapshot"  # optional, will load first snapshot if omitted
   snapshot_alias_name               = "pelias"                 # if you'd like an alias created, use this variable
   snapshot_replica_count            = 1                        # 1 is the default, modify as desired
+
+  # you must set at least one tag as a workaround to https://github.com/pelias/terraform-elasticsearch/issues/12
+  tags {
+    env = "dev"
+  }
 }
 ```
 
