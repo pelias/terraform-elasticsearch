@@ -22,6 +22,7 @@ discovery.zen.hosts_provider: ec2
 discovery.zen.minimum_master_nodes: ${minimum_master_nodes}
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
+cluster.initial_master_nodes: ['$${HOSTNAME}']
 
 cloud.node.auto_attributes: true
 repositories.url.allowed_urls: ["${es_allowed_urls}"]
