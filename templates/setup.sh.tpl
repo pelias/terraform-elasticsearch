@@ -18,13 +18,12 @@ bootstrap.memory_lock: true
 
 network.host: [ '_ec2:privateIpv4_', _local_ ]
 network.publish_host: '_ec2:privateIpv4_'
-discovery.type: ec2
+discovery.zen.hosts_provider: ec2
 discovery.zen.minimum_master_nodes: ${minimum_master_nodes}
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
 
 cloud.node.auto_attributes: true
-cloud.aws.region: ${aws_region}
 repositories.url.allowed_urls: ["${es_allowed_urls}"]
 
 gateway.recover_after_time: 5m
