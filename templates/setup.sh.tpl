@@ -56,7 +56,8 @@ if [[ "$heap_memory" -gt "$max_memory" ]]; then
 fi
 
 sudo sed -i 's/#\?MAX_LOCKED_MEMORY=.*/MAX_LOCKED_MEMORY=unlimited/' /etc/init.d/elasticsearch
-sudo sed -i "s/#ES_HEAP_SIZE=.*$/ES_HEAP_SIZE=$${heap_memory}m/" /etc/default/elasticsearch
+sudo sed -i "s/-Xms.*/-Xms$${heap_memory}m/" /etc/elasticsearch/jvm.options
+sudo sed -i "s/-Xmx.*/-Xmx$${heap_memory}m/" /etc/elasticsearch/jvm.options
 
 # data volume
 data_volume_name="/dev/sdb" # default to an EBS volume mapped to /dev/sdb
