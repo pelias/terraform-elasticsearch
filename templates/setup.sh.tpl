@@ -24,7 +24,6 @@ discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
 
 cloud.node.auto_attributes: true
-repositories.url.allowed_urls: ["${es_allowed_urls}"]
 
 gateway.recover_after_time: 5m
 gateway.expected_nodes: ${expected_nodes}
