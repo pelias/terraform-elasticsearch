@@ -45,7 +45,8 @@ cluster.initial_master_nodes: [ $asg_ip_list ]
 cloud.node.auto_attributes: true
 
 gateway.recover_after_time: 5m
-gateway.expected_nodes: ${expected_nodes}
+gateway.recover_after_nodes: ${expected_nodes}
+gateway.expected_data_nodes: ${expected_nodes}
 
 # circuit breakers
 indices.breaker.fielddata.limit: ${elasticsearch_fielddata_limit}
