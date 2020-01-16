@@ -10,6 +10,12 @@ This repository attempts to collect best practices for a production-ready Elasti
 
 - Terraform 0.11.x: Terraform 0.12 is [not yet supported](https://github.com/pelias/terraform-elasticsearch/issues/4)
 
+## Compatibility
+
+This project is compatible with Elasticsearch 7 _only_. Use historical releases
+before `v7.0.0` to support Elasticsearch 5 or 6. Going forward, the major
+version of this project will track the supported Elasticsearch major version.
+
 ## Setup instructions
 
 ### Create a terraform user
