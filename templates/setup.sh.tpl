@@ -1,9 +1,27 @@
 #!/bin/bash
 set -e
 
+# get list of IPs for this ASG to bootstrap Elasticsearch cluster
+
+function join_by { local IFS="$1"; shift; echo "$*"; }
+
+region=$(curl -s 169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/.$//')
+this_instance_id=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
+
+asg_name=$(aws autoscaling describe-auto-scaling-instances --region $region --output text --instance-ids $this_instance_id \
+        --query "AutoScalingInstances[0].AutoScalingGroupName")
+
+instance_ids=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name --output text --region $region \
+        --query "AutoScalingGroups[0].Instances[].InstanceId")
+
+instance_ips=$(echo $instance_ids | xargs -n1 aws ec2 describe-instances --instance-ids $ID --region $region \
+        --query "Reservations[].Instances[].PrivateIpAddress" --output text)
+
+asg_ip_list=$(join_by , $instance_ips)
+
 # Generate elasticsearch.yml
 
-cat <<'EOF' >/etc/elasticsearch/elasticsearch.yml
+cat <<EOF >/etc/elasticsearch/elasticsearch.yml
 cluster.name: ${es_cluster_name}
 cluster.routing.allocation.awareness.attributes: ${allocation_awareness_attributes}
 
@@ -18,16 +36,17 @@ bootstrap.memory_lock: true
 
 network.host: [ '_ec2:privateIpv4_', _local_ ]
 network.publish_host: '_ec2:privateIpv4_'
-discovery.zen.hosts_provider: ec2
-discovery.zen.minimum_master_nodes: ${minimum_master_nodes}
+discovery.seed_providers: ec2
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
 
+cluster.initial_master_nodes: [ $asg_ip_list ]
+
 cloud.node.auto_attributes: true
-repositories.url.allowed_urls: ["${es_allowed_urls}"]
 
 gateway.recover_after_time: 5m
-gateway.expected_nodes: ${expected_nodes}
+gateway.recover_after_nodes: ${expected_nodes}
+gateway.expected_data_nodes: ${expected_nodes}
 
 # circuit breakers
 indices.breaker.fielddata.limit: ${elasticsearch_fielddata_limit}

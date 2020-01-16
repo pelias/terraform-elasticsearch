@@ -144,12 +144,4 @@ if [[ "$elasticsearch_delayed_allocation" != "" ]]; then
     }"
 fi
 
-## 7. make cluster read_only (prevents deletion of indices)
-curl -s -XPUT --fail "$cluster_url/_cluster/settings" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "persistent" : {
-    "cluster.blocks.read_only" : true
-  }
-}'
-echo
+echo "All done setting up Elasticsearch snapshot"
