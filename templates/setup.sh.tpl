@@ -37,7 +37,6 @@ bootstrap.memory_lock: true
 network.host: [ '_ec2:privateIpv4_', _local_ ]
 network.publish_host: '_ec2:privateIpv4_'
 discovery.seed_providers: ec2
-discovery.zen.minimum_master_nodes: ${minimum_master_nodes}
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
 
