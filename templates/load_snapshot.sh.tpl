@@ -94,24 +94,23 @@ if [[ "$snapshot_name" == "" ]]; then
 fi
 
 curl -s -XPOST --fail "$cluster_url/_snapshot/$es_repo_name/$snapshot_name/_restore" \
-  -H 'Content-Type: application/json' \
-  -d "{
-  \"indices\": \"pelias\",
-  \"rename_pattern\": \"pelias\",
-  \"rename_replacement\": \"$snapshot_name\"
-}"
+  -H 'Content-Type: application/json'
+
+## 3.1 get first index name
+first_index_name=$(curl -s "$cluster_url/_cat/indices?format=json" | jq -r .[].index)
+echo "first index name is $first_index_name"
 
 ## 4. make alias if alias_name set
 
 if [[ "$alias_name" != "" ]]; then
-  echo "creating $alias_name alias pointing to $snapshot_name on $cluster_url"
+  echo "creating $alias_name alias pointing to $first_index_name on $cluster_url"
 
   curl -s -XPOST --fail "$cluster_url/_aliases" \
     -H 'Content-Type: application/json' \
     -d "{
       \"actions\": [{
         \"add\": {
-          \"index\": \"$snapshot_name\",
+          \"index\": \"$first_index_name\",
           \"alias\": \"$alias_name\"
         }
       }]
@@ -122,9 +121,9 @@ else
 fi
 
 ## 5. set replica count
-echo "setting replica count to $replica_count on $snapshot_name index in $cluster_url"
+echo "setting replica count to $replica_count on $first_index_name index in $cluster_url"
 
-curl -s -XPUT --fail "$cluster_url/$snapshot_name/_settings" \
+curl -s -XPUT --fail "$cluster_url/$first_index_name/_settings" \
   -H 'Content-Type: application/json' \
   -d "{
   \"index\" : {
@@ -135,7 +134,7 @@ curl -s -XPUT --fail "$cluster_url/$snapshot_name/_settings" \
 ## 6. Set index specific settings
 
 if [[ "$elasticsearch_delayed_allocation" != "" ]]; then
-  curl -s -XPUT --fail "$cluster_url/$snapshot_name/_settings" \
+  curl -s -XPUT --fail "$cluster_url/$first_index_name/_settings" \
     -H 'Content-Type: application/json' \
     -d "{
       \"settings\" : {
