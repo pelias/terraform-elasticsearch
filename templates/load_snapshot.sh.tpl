@@ -97,7 +97,7 @@ curl -s -XPOST --fail "$cluster_url/_snapshot/$es_repo_name/$snapshot_name/_rest
   -H 'Content-Type: application/json'
 
 ## 3.1 get first index name
-first_index_name=$(curl -s "$cluster_url/_cat/indices?format=json" | jq .[].index)
+first_index_name=$(curl -s "$cluster_url/_cat/indices?format=json" | jq -r .[].index)
 echo "first index name is $first_index_name"
 
 ## 4. make alias if alias_name set
