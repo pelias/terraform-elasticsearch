@@ -23,6 +23,11 @@ variable "subnet_name_filter" {
   default     = "Elasticsearch"
 }
 
+variable "subnet_name_filter_property" {
+  description = "Filter subnets within the VPC by using this name"
+  default     = "tag:Name"
+}
+
 # security settings
 variable "ssh_ip_range" {
   description = "Range of IPs able to SSH into the Elasticsearch nodes"

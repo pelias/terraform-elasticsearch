@@ -3,7 +3,8 @@
 data "aws_subnet_ids" "all_subnets" {
   vpc_id = "${var.aws_vpc_id}"
 
-  tags {
-    Name = "${var.subnet_name_filter}"
+  filter {
+    name = "${var.subnet_name_filter_property}"
+    values = ["${var.subnet_name_filter}"]
   }
 }
