@@ -141,6 +141,7 @@ module "elasticsearch-prod-a" {
   ssh_ip_range                      = "172.20.0.0/16" # adjust this if you'd like SSH access to be limited, or remove if you don't want that
   ami_env_tag_filter                = "prod" # this variable can be adjusted if you tag your AMIs differently, or removed to use the latest AMI
   subnet_name_filter                = "us-east-*" # if you only want to launch Elasticsearch instances in some subnets, provide a filter to find the subnets. Remove if all subnets are ok
+  subnet_name_filter_property       = "tag:Name" # change this if you would like to filter subnets on a tag value other than name. This can be used to create more complex selections of subnets than the prefix-matching allowed in `subnet_name_filter`
 
   # the following section is all optional, and if configured, will load an existing snapshot from S3 on startup
   snapshot_s3_bucket                = "name-of-your-s3-bucket" # required to load snapshot
