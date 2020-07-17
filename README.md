@@ -126,7 +126,7 @@ provider "template" {
 }
 
 module "elasticsearch-prod-a" {
-  source = "github.com/pelias/terraform-elasticsearch?ref=v5.4.1" # check Github for the latest tagged releases
+  source = "github.com/pelias/terraform-elasticsearch?ref=v7.2.0" # check Github for the latest tagged releases
 
   aws_vpc_id   = "vpc-1234" # the ID of an existing VPC in which to create the instances
   ssh_key_name = "ssh-key-to-use"
