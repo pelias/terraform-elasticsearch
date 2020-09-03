@@ -115,6 +115,9 @@ fi
 # Start Elasticsearch
 sudo service elasticsearch start
 
+# Ensure Elasticsearch restarts after reboot
+sudo systemctl enable elasticsearch
+
 # Import elastic status/wait scripts
 . /home/ubuntu/elastic_wait.sh
 
