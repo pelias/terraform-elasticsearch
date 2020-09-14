@@ -130,6 +130,7 @@ module "elasticsearch-prod-a" {
 
   aws_vpc_id   = "vpc-1234" # the ID of an existing VPC in which to create the instances
   ssh_key_name = "ssh-key-to-use"
+  availability_zones = "us-east-1a,us-east-1b,us-east-1c" # List of availability zones to use. Optional in us-east-1, required otherwise
 
   environment                       = "dev" # or whatever unique environment you choose
   elasticsearch_max_instances       = 2 # 2 r5.large instances is suitable for a minimal full-planet production build with replicas
