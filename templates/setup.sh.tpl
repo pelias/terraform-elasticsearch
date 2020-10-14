@@ -39,6 +39,7 @@ network.publish_host: '_ec2:privateIpv4_'
 discovery.seed_providers: ec2
 discovery.ec2.groups: ${aws_security_group}
 discovery.ec2.availability_zones: [${availability_zones}]
+discovery.ec2.endpoint: ec2.$${region}.amazonaws.com
 
 cluster.initial_master_nodes: [ $asg_ip_list ]
 
