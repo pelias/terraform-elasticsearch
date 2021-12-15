@@ -96,8 +96,9 @@ fi
 curl -s -XPOST --fail "$cluster_url/_snapshot/$es_repo_name/$snapshot_name/_restore" \
   -H 'Content-Type: application/json'
 
-## 3.1 get first index name
-first_index_name=$(curl -s "$cluster_url/_cat/indices?format=json" | jq -r .[].index | grep -v '.geoip_databases')
+## 3.1 get first index name (excluding dot indices)
+## see: https://github.com/elastic/elasticsearch/issues/50251
+first_index_name=$(curl -s "$cluster_url/_cat/indices?format=json" | jq -r .[].index | grep -v '^\.')
 echo "first index name is $first_index_name"
 
 ## 4. make alias if alias_name set
