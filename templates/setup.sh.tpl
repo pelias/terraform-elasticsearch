@@ -89,6 +89,20 @@ if [[ "$potential_nvme_disk" != "" ]]; then
   data_volume_name=$potential_nvme_disk
 fi
 
+# Automatic Mapping of NVMe-style EBS Volumes to Standard Block Device Paths
+# https://github.com/oogali/ebs-automatic-nvme-mapping
+sudo curl -s \
+  -o /usr/local/sbin/ebs-nvme-mapping.sh \
+  https://raw.githubusercontent.com/oogali/ebs-automatic-nvme-mapping/master/ebs-nvme-mapping.sh
+
+sudo curl -s \
+  -o /etc/udev/rules.d/999-aws-ebs-nvme.rules \
+  https://raw.githubusercontent.com/oogali/ebs-automatic-nvme-mapping/master/999-aws-ebs-nvme.rules
+
+sudo chmod +x /usr/local/sbin/ebs-nvme-mapping.sh
+sudo apt-get update -y && sudo apt-get install -y nvme-cli
+sudo udevadm control --reload-rules && udevadm trigger && udevadm settle
+
 sudo mkfs -t ext4 $data_volume_name
 sudo tune2fs -m 0 $data_volume_name
 sudo mkdir -p ${elasticsearch_data_dir}
