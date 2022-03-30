@@ -9,11 +9,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "availability_zones" {
-  description = "AWS region to launch servers."
-  default     = "us-east-1a,us-east-1b,us-east-1c,us-east-1d,us-east-1e"
-}
-
 variable "aws_vpc_id" {
   description = "These templates assume a VPC already exists"
 }
@@ -41,7 +36,7 @@ variable "ssh_ip_range" {
 # geocoders really love having lots of CPU available
 variable "elasticsearch_instance_type" {
   description = "Elasticsearch instance type."
-  default     = "t3.large"
+  default     = "c5d.9xlarge"
 }
 
 # Elasticsearch ASG instance counts
@@ -126,12 +121,6 @@ variable "elasticsearch_search_queue_size" {
   default     = ""
 }
 
-# https://www.elastic.co/guide/en/elasticsearch/reference/master/delayed-allocation.html
-variable "elasticsearch_delayed_allocation" {
-  description = "The time to wait after a node leaves before re-allocating shards. ES default of 1 minute used if unset"
-  default     = ""
-}
-
 # disk based shard allocation filtering settings
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/disk-allocator.html
 variable "elasticsearch_high_disk_watermark" {
@@ -142,12 +131,6 @@ variable "elasticsearch_high_disk_watermark" {
 variable "elasticsearch_low_disk_watermark" {
   description = "Elasticsearch low disk watermark setting"
   default = ""
-}
-
-# https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html#enabling-awareness
-variable "allocation_awareness_attributes" {
-  description = "attributes to use to determine shard placement"
-  default     = "aws_availability_zone"
 }
 
 ## snapshot loading settings
@@ -164,11 +147,6 @@ variable "snapshot_base_path" {
 variable "snapshot_name" {
   description = "The name of the snapshot to load from S3. If blank, the first snapshot in the repository will be used"
   default = ""
-}
-
-variable "snapshot_replica_count" {
-  description = "The number of replicas to add to the loaded snapshot. Default 1"
-  default = "1"
 }
 
 variable "snapshot_alias_name" {

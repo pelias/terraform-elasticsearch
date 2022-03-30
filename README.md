@@ -130,7 +130,6 @@ module "elasticsearch-prod-a" {
 
   aws_vpc_id   = "vpc-1234" # the ID of an existing VPC in which to create the instances
   ssh_key_name = "ssh-key-to-use"
-  availability_zones = "us-east-1a,us-east-1b,us-east-1c" # List of availability zones to use. Optional in us-east-1, required otherwise
 
   environment                       = "dev" # or whatever unique environment you choose
   elasticsearch_max_instances       = 2 # 2 r5.large instances is suitable for a minimal full-planet production build with replicas
@@ -149,7 +148,6 @@ module "elasticsearch-prod-a" {
   snapshot_base_path                = "path/to/your/snapshot"  # required to load snapshot
   #snapshot_name                     = "name-of-your-snapshot"  # optional, will load first snapshot if omitted
   snapshot_alias_name               = "pelias"                 # if you'd like an alias created, use this variable
-  snapshot_replica_count            = 1                        # 1 is the default, modify as desired
 
   # you must set at least one tag as a workaround to https://github.com/pelias/terraform-elasticsearch/issues/12
   tags {

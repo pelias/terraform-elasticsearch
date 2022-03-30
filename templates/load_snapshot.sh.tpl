@@ -10,8 +10,7 @@ base_path="${snapshot_base_path}"
 snapshot_name="${snapshot_name}"
 read_only="${snapshot_repository_read_only}"
 alias_name="${snapshot_alias_name}"
-replica_count="${snapshot_replica_count}"
-elasticsearch_delayed_allocation="${elasticsearch_delayed_allocation}"
+replica_count=0
 
 # check all required variables are set
 if [[ "$s3_bucket" == "" ]]; then
@@ -131,17 +130,5 @@ curl -s -XPUT --fail "$cluster_url/$first_index_name/_settings" \
     \"number_of_replicas\" : $replica_count
   }
 }"
-
-## 6. Set index specific settings
-
-if [[ "$elasticsearch_delayed_allocation" != "" ]]; then
-  curl -s -XPUT --fail "$cluster_url/$first_index_name/_settings" \
-    -H 'Content-Type: application/json' \
-    -d "{
-      \"settings\" : {
-        \"index.unassigned.node_left.delayed_timeout\": \"$elasticsearch_delayed_allocation\"
-      }
-    }"
-fi
 
 echo "All done setting up Elasticsearch snapshot"
