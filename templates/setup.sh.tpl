@@ -40,12 +40,14 @@ bootstrap.memory_lock: true
 network.host: [ '_ec2:privateIpv4_', _local_ ]
 network.publish_host: '_ec2:privateIpv4_'
 
-# Threadpool and Queueing Parameters
-thread_pool.search.queue_size: ${elasticsearch_search_queue_size}
-
 # circuit breakers
 indices.breaker.fielddata.limit: ${elasticsearch_fielddata_limit}
 EOF
+
+## set search queue size if set
+if [[ "${elasticsearch_search_queue_size}" != "" ]]; then
+  echo "thread_pool.search.queue_size: ${elasticsearch_search_queue_size}" >> /etc/elasticsearch/elasticsearch.yml
+fi
 
 # heap size
 memory_in_bytes=`awk '/MemTotal/ {print $2}' /proc/meminfo`
