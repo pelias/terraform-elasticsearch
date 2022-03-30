@@ -22,10 +22,13 @@ asg_ip_list=$(join_by , $instance_ips)
 # Generate elasticsearch.yml
 
 cat <<EOF >/etc/elasticsearch/elasticsearch.yml
-cluster.name: ${es_cluster_name}
-cluster.routing.allocation.awareness.attributes: ${allocation_awareness_attributes}
+# Should be globally unique to prevent new nodes failing startup trying to
+# join another single-node cluster with the same name.
+cluster.name: ${es_cluster_name}-$${HOSTNAME}
 
+# Node properties
 node.name: $${HOSTNAME} # the $${HOSTNAME} var is filled in by Elasticsearch
+discovery.type: single-node  # This will be the only node in the cluster.
 
 # our init.d script sets the default to this as well
 path.data: ${elasticsearch_data_dir}
@@ -36,41 +39,20 @@ bootstrap.memory_lock: true
 
 network.host: [ '_ec2:privateIpv4_', _local_ ]
 network.publish_host: '_ec2:privateIpv4_'
-discovery.seed_providers: ec2
-discovery.ec2.groups: ${aws_security_group}
-discovery.ec2.availability_zones: [${availability_zones}]
-discovery.ec2.endpoint: ec2.$${region}.amazonaws.com
 
-cluster.initial_master_nodes: [ $asg_ip_list ]
-
-cloud.node.auto_attributes: true
-
-gateway.recover_after_time: 5m
-gateway.recover_after_nodes: ${expected_nodes}
-gateway.expected_data_nodes: ${expected_nodes}
+# Threadpool and Queueing Parameters
+thread_pool.search.queue_size: ${elasticsearch_search_queue_size}
 
 # circuit breakers
 indices.breaker.fielddata.limit: ${elasticsearch_fielddata_limit}
 EOF
 
-## set search queue size if set
-if [[ "${elasticsearch_search_queue_size}" != "" ]]; then
-  echo "thread_pool.search.queue_size: ${elasticsearch_search_queue_size}" >> /etc/elasticsearch/elasticsearch.yml
-fi
-
-# elasticsearch 2.4 specific settings
-# note: we can check if 'bin/plugin' exists, this was renamed after 2.4
-if [ -f '/usr/share/elasticsearch/bin/plugin' ]; then
-  # in older versions of ES 'memory_lock' is called 'mlockall'
-  sed -i 's/bootstrap.memory_lock/bootstrap.mlockall/g' /etc/elasticsearch/elasticsearch.yml
-fi
-
 # heap size
 memory_in_bytes=`awk '/MemTotal/ {print $2}' /proc/meminfo`
-heap_memory=$(( memory_in_bytes * ${elasticsearch_heap_memory_percent} / 100 / 1024 )) # take percentage of system memory, and convert to MB
-
-# Make sure we're not over 31GB
-max_memory=31000
+# take percentage of system memory, and convert to MB
+heap_memory=$(( memory_in_bytes * ${elasticsearch_heap_memory_percent} / 100 / 1024 ))
+# Make sure we're not over 10GB
+max_memory=10000
 if [[ "$heap_memory" -gt "$max_memory" ]]; then
   heap_memory="$max_memory"
 fi
