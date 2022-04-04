@@ -60,7 +60,7 @@ resource "aws_security_group" "elasticsearch_elb" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags {
+  tags = {
     Name = "ElasticSearch Load Balancer"
   }
 }

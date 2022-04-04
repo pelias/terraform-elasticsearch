@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  terraform:
+    image: hashicorp/terraform:light
+    volumes:
+      - .:/tf
+    working_dir: /tf

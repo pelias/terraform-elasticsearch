@@ -19,7 +19,7 @@ resource "aws_iam_role_policy" "elasticsearch" {
 data "template_file" "s3_policy" {
   template = "${file("${path.module}/templates/s3_policy.json.tpl")}"
 
-  vars {
+  vars = {
     snapshot_s3_bucket = "${var.snapshot_s3_bucket}"
   }
 }

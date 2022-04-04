@@ -1,7 +1,7 @@
 data "template_file" "setup" {
   template = "${file("${path.module}/templates/setup.sh.tpl")}"
 
-  vars {
+  vars = {
     elasticsearch_data_dir            = "${var.elasticsearch_data_dir}"
     elasticsearch_log_dir             = "${var.elasticsearch_log_dir}"
     es_cluster_name                   = "${var.service_name}-${var.environment}-elasticsearch"
@@ -15,7 +15,7 @@ data "template_file" "setup" {
 data "template_file" "load_snapshot" {
   template = "${file("${path.module}/templates/load_snapshot.sh.tpl")}"
 
-  vars {
+  vars = {
     snapshot_s3_bucket = "${var.snapshot_s3_bucket}"
     snapshot_base_path = "${var.snapshot_base_path}"
     snapshot_name = "${var.snapshot_name}"
