@@ -53,7 +53,7 @@ resource "aws_autoscaling_group" "elasticsearch" {
   default_cooldown     = 30
   force_delete         = true
 
-  launch_template {
+  launch_template      = {
     id      = "${aws_launch_template.elasticsearch.id}"
     version = "$$Latest"
   }
