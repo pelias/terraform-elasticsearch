@@ -3,12 +3,12 @@ resource "aws_autoscaling_policy" "scale_down_single" {
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
-  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+  autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "scale_down" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
-  alarm_actions       = [aws_autoscaling_policy.scale_down_single.arn]
+  alarm_actions       = ["${aws_autoscaling_policy.scale_down_single.arn}"]
   alarm_name          = "elasticsearch-scale_up"
   comparison_operator = "LessThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
@@ -18,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down" {
   period              = "120"
   statistic           = "Average"
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+    AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
   }
 }
 
@@ -27,12 +27,12 @@ resource "aws_autoscaling_policy" "scale_up_single" {
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
-  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+  autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "scale_up" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
-  alarm_actions       = [aws_autoscaling_policy.scale_up_single.arn]
+  alarm_actions       = ["${aws_autoscaling_policy.scale_up_single.arn}"]
   alarm_name          = "elasticsearch-scale_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up" {
   period              = "120"
   statistic           = "Average"
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+    AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
   }
 }
 resource "aws_autoscaling_group" "elasticsearch" {
@@ -81,6 +81,6 @@ resource "aws_autoscaling_group" "elasticsearch" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes = [desired_capacity]
+    ignore_changes = ["desired_capacity"]
   }
 }
