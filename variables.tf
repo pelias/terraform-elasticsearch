@@ -56,6 +56,16 @@ variable "elasticsearch_max_instances" {
   default     = "2"
 }
 
+variable "elasticsearch_scale_up_cpu_threshold" {
+  description = "CPU usage threshold to trigger a cluster scale-up."
+  default = 10
+}
+
+variable "elasticsearch_scale_down_cpu_threshold" {
+  description = "CPU usage threshold to trigger a cluster scale-down."
+  default = 5
+}
+
 # higher values here tune elasticsearch for use on smaller clusters
 # lower values give better performance if there is lots of RAM available
 variable "elasticsearch_heap_memory_percent" {

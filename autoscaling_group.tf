@@ -1,3 +1,50 @@
+resource "aws_autoscaling_policy" "scale_down_single" {
+  name                   = "elasticsearch-scale_downsingle"
+  scaling_adjustment     = -1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 120
+  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+}
+
+resource "aws_cloudwatch_metric_alarm" "scale_down" {
+  alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
+  alarm_actions       = [aws_autoscaling_policy.scale_down_single.arn]
+  alarm_name          = "elasticsearch-scale_up"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  namespace           = "AWS/EC2"
+  metric_name         = "CPUUtilization"
+  threshold           = "${var.elasticsearch_scale_down_cpu_threshold}"
+  evaluation_periods  = "2"
+  period              = "120"
+  statistic           = "Average"
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+  }
+}
+
+resource "aws_autoscaling_policy" "scale_up_single" {
+  name                   = "elasticsearch-scale_up_single"
+  scaling_adjustment     = 1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 120
+  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+}
+
+resource "aws_cloudwatch_metric_alarm" "scale_up" {
+  alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
+  alarm_actions       = [aws_autoscaling_policy.scale_up_single.arn]
+  alarm_name          = "elasticsearch-scale_up"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  namespace           = "AWS/EC2"
+  metric_name         = "CPUUtilization"
+  threshold           = "${var.elasticsearch_scale_up_cpu_threshold}"
+  evaluation_periods  = "2"
+  period              = "120"
+  statistic           = "Average"
+  dimensions = {
+    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+  }
+}
 resource "aws_autoscaling_group" "elasticsearch" {
   name                 = "${var.service_name}-${var.environment}-elasticsearch"
   max_size             = "${var.elasticsearch_max_instances}"
@@ -34,5 +81,6 @@ resource "aws_autoscaling_group" "elasticsearch" {
 
   lifecycle {
     create_before_destroy = true
+    ignore_changes = [desired_capacity]
   }
 }
