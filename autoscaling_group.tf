@@ -8,7 +8,7 @@ resource "aws_autoscaling_policy" "scale_down_single" {
 
 resource "aws_cloudwatch_metric_alarm" "scale_down" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
-  alarm_actions       = [aws_autoscaling_policy.scale_down_single.arn]
+  alarm_actions       = ["${aws_autoscaling_policy.scale_down_single.arn}"]
   alarm_name          = "elasticsearch-scale_up"
   comparison_operator = "LessThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
@@ -32,7 +32,7 @@ resource "aws_autoscaling_policy" "scale_up_single" {
 
 resource "aws_cloudwatch_metric_alarm" "scale_up" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
-  alarm_actions       = [aws_autoscaling_policy.scale_up_single.arn]
+  alarm_actions       = ["${aws_autoscaling_policy.scale_up_single.arn}"]
   alarm_name          = "elasticsearch-scale_up"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
@@ -81,6 +81,6 @@ resource "aws_autoscaling_group" "elasticsearch" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes = [desired_capacity]
+    ignore_changes = ["desired_capacity"]
   }
 }
