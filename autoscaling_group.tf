@@ -3,7 +3,7 @@ resource "aws_autoscaling_policy" "scale_down_single" {
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
-  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+  autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "scale_down" {
@@ -18,7 +18,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_down" {
   period              = "120"
   statistic           = "Average"
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+    AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
   }
 }
 
@@ -27,7 +27,7 @@ resource "aws_autoscaling_policy" "scale_up_single" {
   scaling_adjustment     = 1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
-  autoscaling_group_name = aws_autoscaling_group.elasticsearch.name
+  autoscaling_group_name = "${aws_autoscaling_group.elasticsearch.name}"
 }
 
 resource "aws_cloudwatch_metric_alarm" "scale_up" {
@@ -42,7 +42,7 @@ resource "aws_cloudwatch_metric_alarm" "scale_up" {
   period              = "120"
   statistic           = "Average"
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.elasticsearch.name
+    AutoScalingGroupName = "${aws_autoscaling_group.elasticsearch.name}"
   }
 }
 resource "aws_autoscaling_group" "elasticsearch" {
