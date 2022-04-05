@@ -1,5 +1,5 @@
 resource "aws_autoscaling_policy" "scale_down_single" {
-  name                   = "elasticsearch-scale_downsingle"
+  name                   = "elasticsearch-scale_down_single"
   scaling_adjustment     = -1
   adjustment_type        = "ChangeInCapacity"
   cooldown               = 120
