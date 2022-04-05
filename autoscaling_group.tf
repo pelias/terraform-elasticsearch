@@ -9,7 +9,7 @@ resource "aws_autoscaling_policy" "scale_down_single" {
 resource "aws_cloudwatch_metric_alarm" "scale_down" {
   alarm_description   = "Monitors CPU utilization for ElasticSearch Cluster Nodes"
   alarm_actions       = ["${aws_autoscaling_policy.scale_down_single.arn}"]
-  alarm_name          = "elasticsearch-scale_up"
+  alarm_name          = "elasticsearch-scale_down"
   comparison_operator = "LessThanOrEqualToThreshold"
   namespace           = "AWS/EC2"
   metric_name         = "CPUUtilization"
