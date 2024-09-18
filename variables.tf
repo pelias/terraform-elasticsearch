@@ -95,6 +95,16 @@ variable "elasticsearch_log_volume_type" {
   default = "gp2"
 }
 
+variable "elasticsearch_wait_retry_count" {
+  description = "total number of iterations for the elastic_wait command"
+  default = "30"
+}
+
+variable "elasticsearch_wait_retry_timeout" {
+  description = "delay per iteration for the elastic_wait command (in seconds)"
+  default = "1"
+}
+
 # AMI Settings
 
 variable "ami_env_tag_filter" {
