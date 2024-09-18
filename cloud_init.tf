@@ -14,6 +14,8 @@ data "template_file" "setup" {
     elasticsearch_fielddata_limit     = "${var.elasticsearch_fielddata_limit}"
     elasticsearch_search_queue_size   = "${var.elasticsearch_search_queue_size}"
     allocation_awareness_attributes   = "${var.allocation_awareness_attributes}"
+    elasticsearch_wait_retry_count    = "${var.elasticsearch_wait_retry_count}"
+    elasticsearch_wait_retry_timeout  = "${var.elasticsearch_wait_retry_timeout}"
   }
 }
 

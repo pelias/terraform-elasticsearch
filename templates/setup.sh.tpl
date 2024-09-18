@@ -120,6 +120,8 @@ sudo service elasticsearch start
 sudo systemctl enable elasticsearch
 
 # Import elastic status/wait scripts
+export ELASTIC_RETRY_COUNT="${elasticsearch_wait_retry_count}"
+export ELASTIC_RETRY_TIMEOUT="${elasticsearch_wait_retry_timeout}"
 . /home/ubuntu/elastic_wait.sh
 
 # Wait for elasticsearch service to come up (note elastic_wait exits 0|1); then
