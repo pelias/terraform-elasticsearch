@@ -7,10 +7,6 @@ date
 sudo service elasticsearch status || true
 sudo service elasticsearch stop || true
 
-# extend startup timeout of elasticsearch service
-sudo sed -i 's/TimeoutStartSec=.*/TimeoutStartSec=900/' /etc/systemd/system/elasticsearch.service
-systemctl daemon-reload
-
 # get list of IPs for this ASG to bootstrap Elasticsearch cluster
 
 function join_by { local IFS="$1"; shift; echo "$*"; }
@@ -114,7 +110,7 @@ sudo chown -R elasticsearch:elasticsearch ${elasticsearch_log_dir}
 # https://www.elastic.co/guide/en/elasticsearch/reference/master/setting-system-settings.html
 if [ "$(ps --no-headers -o comm 1)" = 'systemd' ]; then
   sudo mkdir -p /usr/lib/systemd/system/elasticsearch.service.d
-  sudo echo -e '[Service]\nLimitMEMLOCK=infinity' > /usr/lib/systemd/system/elasticsearch.service.d/override.conf
+  sudo echo -e '[Service]\nLimitMEMLOCK=infinity\nTimeoutStartSec=900' > /usr/lib/systemd/system/elasticsearch.service.d/override.conf
   sudo systemctl daemon-reload
 fi
 
