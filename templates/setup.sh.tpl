@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Make sure ES is stopped for now while we configure it
+sudo service elasticsearch stop
+
 # get list of IPs for this ASG to bootstrap Elasticsearch cluster
 
 function join_by { local IFS="$1"; shift; echo "$*"; }
