@@ -8,8 +8,8 @@ sudo service elasticsearch status || true
 sudo service elasticsearch stop || true
 
 # extend startup timeout of elasticsearch service
-mkdir -p /etc/systemd/system/elasticsearch.service.d
-echo -e "[Service]\nTimeoutStartUSec=300" > /etc/systemd/system/elasticsearch.service.d/override.conf
+sudo sed -i 's/TimeoutStartSec=.*/TimeoutStartSec=900/' /etc/systemd/system/elasticsearch.service
+systemctl daemon-reload
 
 # get list of IPs for this ASG to bootstrap Elasticsearch cluster
 
