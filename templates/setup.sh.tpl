@@ -2,6 +2,8 @@
 set -e
 
 # Make sure ES is stopped for now while we configure it
+date
+sudo service elasticsearch status
 sudo service elasticsearch stop
 
 # get list of IPs for this ASG to bootstrap Elasticsearch cluster
