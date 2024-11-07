@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-
+set -x
 
 # set variables, convert terraform variables to variables used by this shell script
 cluster_url="http://localhost:9200"

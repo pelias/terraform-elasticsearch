@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euo pipefail
+set -x
 
 # Make sure ES is stopped for now while we configure it
 date
