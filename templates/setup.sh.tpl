@@ -7,6 +7,10 @@ date
 sudo service elasticsearch status || true
 sudo service elasticsearch stop || true
 
+# extend startup timeout of elasticsearch service
+mkdir -p /etc/systemd/system/elasticsearch.service.d
+echo -e "[Service]\nTimeoutStartUSec=300" > /etc/systemd/system/elasticsearch.service.d/override.conf
+
 # get list of IPs for this ASG to bootstrap Elasticsearch cluster
 
 function join_by { local IFS="$1"; shift; echo "$*"; }
