@@ -110,7 +110,7 @@ sudo chown -R elasticsearch:elasticsearch ${elasticsearch_log_dir}
 # https://www.elastic.co/guide/en/elasticsearch/reference/master/setting-system-settings.html
 if [ "$(ps --no-headers -o comm 1)" = 'systemd' ]; then
   sudo mkdir -p /usr/lib/systemd/system/elasticsearch.service.d
-  sudo echo -e '[Service]\nLimitMEMLOCK=infinity\nTimeoutStartSec=900' > /usr/lib/systemd/system/elasticsearch.service.d/override.conf
+  sudo echo -e '[Service]\nLimitMEMLOCK=infinity' > /usr/lib/systemd/system/elasticsearch.service.d/override.conf
   sudo systemctl daemon-reload
 fi
 
