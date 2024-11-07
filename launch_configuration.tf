@@ -15,17 +15,6 @@ resource "aws_launch_template" "elasticsearch" {
   }
 
   block_device_mappings = [{
-    device_name = "/dev/sdb"
-    ebs {
-      volume_size = "${var.elasticsearch_data_volume_size}"
-      volume_type = "${var.elasticsearch_data_volume_type}"
-    }
-  }, {
-    device_name = "/dev/sdc"
-    ebs {
-      volume_size = "${var.elasticsearch_log_volume_size}"
-      volume_type = "${var.elasticsearch_log_volume_type}"
-    }
   }]
 
   tag_specifications {

@@ -80,7 +80,7 @@ sudo sed -i "s/-Xms.*/-Xms$${heap_memory}m/" /etc/elasticsearch/jvm.options
 sudo sed -i "s/-Xmx.*/-Xmx$${heap_memory}m/" /etc/elasticsearch/jvm.options
 
 # data volume
-data_volume_name="/dev/sdb" # default to an EBS volume mapped to /dev/sdb
+data_volume_name="/dev/nvme1n1" # default to the first EBS volume
 
 # check for local NVMe disks and use them if found
 potential_nvme_disk="$(ls /dev/disk/by-id/nvme-Amazon_EC2_NVMe_Instance_Storage* | head -1)"
@@ -96,13 +96,8 @@ sudo mount $data_volume_name ${elasticsearch_data_dir}
 sudo echo "$data_volume_name ${elasticsearch_data_dir} ext4 defaults,nofail 0 2" >> /etc/fstab
 sudo chown -R elasticsearch:elasticsearch ${elasticsearch_data_dir}
 
-# log volume
-log_volume_name="/dev/sdc"
-sudo mkfs -t ext4 $log_volume_name
-sudo tune2fs -m 0 $log_volume_name
-sudo mkdir -p ${elasticsearch_log_dir}
-sudo mount $log_volume_name ${elasticsearch_log_dir}
-sudo echo "$log_volume_name ${elasticsearch_log_dir} ext4 defaults,nofail 0 2" >> /etc/fstab
+# log volume (just use a directory)
+mkdir -p ${elasticsearch_log_dir}
 sudo chown -R elasticsearch:elasticsearch ${elasticsearch_log_dir}
 
 # set LimitMEMLOCK for systemd (required for memory locking to work with systemd)
