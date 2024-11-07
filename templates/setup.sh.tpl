@@ -20,8 +20,8 @@ asg_name=$(aws autoscaling describe-auto-scaling-instances --region $region --ou
 instance_ids=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names $asg_name --output text --region $region \
         --query "AutoScalingGroups[0].Instances[].InstanceId")
 
-instance_ips=$(echo $instance_ids | xargs -n1 aws ec2 describe-instances --instance-ids $ID --region $region \
-        --query "Reservations[].Instances[].PrivateIpAddress" --output text)
+instance_ips=$(echo $instance_ids | xargs -n1 aws ec2 describe-instances --region $region \
+        --query "Reservations[].Instances[].PrivateIpAddress" --output text --instance-ids)
 
 asg_ip_list=$(join_by , $instance_ips)
 
